@@ -83,6 +83,7 @@ GRANT USAGE ON SCHEMA jw, jw_api TO journalwick_runtime, journalwick_worker;
 GRANT USAGE ON SCHEMA jw TO journalwick_reporter;
 
 CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA jw_support;
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA jw_support;
 
 DO $verify_bootstrap$
 BEGIN
@@ -99,6 +100,13 @@ BEGIN
     WHERE e.extname = 'btree_gist' AND n.nspname = 'jw_support'
   ) THEN
     RAISE EXCEPTION 'btree_gist is not installed in jw_support';
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_extension e
+    JOIN pg_namespace n ON n.oid = e.extnamespace
+    WHERE e.extname = 'pgcrypto' AND n.nspname = 'jw_support'
+  ) THEN
+    RAISE EXCEPTION 'pgcrypto is not installed in jw_support';
   END IF;
 END
 $verify_bootstrap$;

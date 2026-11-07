@@ -18,7 +18,9 @@ This installer is deliberately limited to Ubuntu 22.04 amd64 and PostgreSQL 18.6
 ./scripts/dev-postgres ready
 ```
 
-`init` refuses to replace any existing data directory. The cluster uses trusted loopback authentication for the local synthetic fixture. It is not an acceptable production authentication mode and does not prove that a hostile local process cannot select another database role.
+`init` refuses to replace any existing data directory. The bootstrap installs `btree_gist` for the period exclusion constraint and `pgcrypto` for database-side SHA-256 validation, both in the owner-controlled `jw_support` schema. Migrations verify the expected extension schema and interfaces before relying on them.
+
+The cluster uses trusted loopback authentication for the local synthetic fixture. It is not an acceptable production authentication mode and does not prove that a hostile local process cannot select another database role.
 
 Useful local commands:
 

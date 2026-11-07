@@ -19,4 +19,4 @@ fi
 "${script_dir}/dev-postgres" psql -d "$database_name" -v ON_ERROR_STOP=1 \
     -f "${script_dir}/dev-bootstrap.sql"
 
-printf '%s\n' 'Journalwick local roles, schemas, grants, and btree_gist support are ready.'
+printf '%s\n' 'Journalwick local roles, schemas, grants, and trusted PostgreSQL extensions are ready.'
