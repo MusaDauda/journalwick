@@ -29,8 +29,8 @@ PostgreSQL is the financial authority. Journals are append-only, money is exact 
 
 ## Planned local endpoints
 
-The Day 03 baseline assigns the API to `127.0.0.1:8003`, the console to `http://localhost:5203`, and a dedicated PostgreSQL 18 development database to `127.0.0.1:55003`. Current host inspection found Python 3.12 available through uv and Node 24 installed; PostgreSQL client/server tools, Docker, and Terraform were not present. Recheck ports and prerequisites before starting local services.
+The Day 03 baseline assigns the API to `127.0.0.1:8003`, the console to `http://localhost:5203`, and a dedicated PostgreSQL 18 development database to `127.0.0.1:55003`. The API and console use those reserved ports; PostgreSQL tools run through `scripts/dev-postgres`. Recheck ports and prerequisites before starting local services.
 
 ## Build status
 
-See `tasks/todo.md`. Do not treat a starter screen, synthetic provider fixture, successful frontend build, or documentation check as acceptance of the ledger or a release.
+See `tasks/todo.md` and [current implementation status](docs/STATUS.md). The local PostgreSQL 18.6 cluster is a trusted synthetic fixture. It does not stand in for the managed TLS/IAM release topology. Do not treat a synthetic provider fixture, successful frontend build, or documentation check as acceptance of the ledger or a release.

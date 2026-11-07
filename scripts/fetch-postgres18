@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+project_dir="$(cd -- "${script_dir}/.." && pwd)"
+pg_root="${project_dir}/.local/postgresql18"
+apt_root="${pg_root}/apt"
+sources_file="${apt_root}/sources.list"
+key_file="${apt_root}/pgdg.asc"
+apt_lists="${apt_root}/lists"
+apt_cache="${apt_root}/cache"
+packages_dir="${pg_root}/packages"
+expected_fingerprint='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8'
+package_version='18.6-1.pgdg22.04+2'
+
+if [[ -x "${pg_root}/usr/lib/postgresql/18/bin/postgres" ]]; then
+    installed_version="$(LD_LIBRARY_PATH="${pg_root}/usr/lib/x86_64-linux-gnu" \
+        "${pg_root}/usr/lib/postgresql/18/bin/postgres" --version)"
+    if [[ "$installed_version" == *'18.6'* ]]; then
+        printf '%s\n' "PostgreSQL 18.6 is already available at $pg_root."
+        exit 0
+    fi
+    printf '%s\n' "Refusing to replace the existing local PostgreSQL tree: $installed_version" >&2
+    exit 1
+fi
+
+if [[ ! -r /etc/os-release ]]; then
+    printf '%s\n' 'Cannot verify the supported Ubuntu release.' >&2
+    exit 1
+fi
+
+# shellcheck disable=SC1091
+. /etc/os-release
+if [[ "${ID:-}" != 'ubuntu' || "${VERSION_ID:-}" != '22.04' ]]; then
+    printf '%s\n' 'This local package path is pinned for Ubuntu 22.04 amd64.' >&2
+    exit 1
+fi
+if [[ "$(dpkg --print-architecture)" != 'amd64' ]]; then
+    printf '%s\n' 'This local package path is pinned for Ubuntu 22.04 amd64.' >&2
+    exit 1
+fi
+
+for command_name in curl gpg apt-get dpkg-deb; do
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        printf '%s\n' "Required local package tool is missing: $command_name" >&2
+        exit 1
+    fi
+done
+
+mkdir -p "${apt_lists}/partial" "${apt_cache}/archives/partial" "$packages_dir"
+curl --fail --silent --show-error --location \
+    https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+    --output "$key_file"
+
+fingerprint="$(gpg --show-keys --with-colons "$key_file" | awk -F: '$1 == "fpr" { print $10; exit }')"
+if [[ "$fingerprint" != "$expected_fingerprint" ]]; then
+    printf '%s\n' 'The PostgreSQL repository signing key did not match the published fingerprint.' >&2
+    exit 1
+fi
+
+printf '%s\n' \
+    "deb [arch=amd64 signed-by=${key_file}] https://apt.postgresql.org/pub/repos/apt jammy-pgdg main" \
+    > "$sources_file"
+
+apt_options=(
+    -o "Dir::Etc::sourcelist=${sources_file}"
+    -o 'Dir::Etc::sourceparts=-'
+    -o "Dir::State::lists=${apt_lists}"
+    -o "Dir::Cache=${apt_cache}"
+    -o 'APT::Get::List-Cleanup=0'
+)
+
+apt-get "${apt_options[@]}" update
+(
+    cd "$packages_dir"
+    apt-get "${apt_options[@]}" download \
+        "postgresql-18=${package_version}" \
+        "postgresql-client-18=${package_version}" \
+        "libpq5=${package_version}"
+)
+
+for package_name in postgresql-18 postgresql-client-18 libpq5; do
+    package_file="${packages_dir}/${package_name}_${package_version}_amd64.deb"
+    if [[ ! -f "$package_file" ]]; then
+        printf '%s\n' "The signed PostgreSQL repository did not provide $package_name." >&2
+        exit 1
+    fi
+    actual_version="$(dpkg-deb -f "$package_file" Version)"
+    if [[ "$actual_version" != "$package_version" ]]; then
+        printf '%s\n' "Expected $package_name $package_version but received $actual_version." >&2
+        exit 1
+    fi
+    dpkg-deb -x "$package_file" "$pg_root"
+done
+
+binary_dir="${pg_root}/usr/lib/postgresql/18/bin"
+library_dir="${pg_root}/usr/lib/x86_64-linux-gnu"
+installed_version="$(LD_LIBRARY_PATH="${library_dir}" "${binary_dir}/postgres" --version)"
+if [[ "$installed_version" != *'18.6'* ]]; then
+    printf '%s\n' "The extracted PostgreSQL binary has an unexpected version: $installed_version" >&2
+    exit 1
+fi
+
+printf '%s\n' "Extracted $installed_version into $pg_root. No system package or cluster was installed."

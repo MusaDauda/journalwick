@@ -17,6 +17,7 @@ test-results/
 *.key
 *.p12
 .terraform/
+.local/
 terraform.tfstate
 terraform.tfstate.*
 crash.log

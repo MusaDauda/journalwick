@@ -19,7 +19,7 @@ Inspected on 2026-11-07. Historical version numbers in this file are a record of
 | OpenAPI TypeScript | 7.13.0 | Generated API types from the actual FastAPI OpenAPI schema |
 | FastAPI | 0.162.2 | API and OpenAPI source |
 | Psycopg / pool | 3.3.8 / 3.3.3 | PostgreSQL adapter and bounded connection pools |
-| PostgreSQL target | 18 | Required by the Day 03 development baseline; server/client tools are not installed yet |
+| PostgreSQL | 18.6 | Rootless PGDG Jammy packages extracted under the ignored `.local/postgresql18/` directory |
 
 `apps/console/package-lock.json` and `uv.lock` record the complete resolved dependency graphs. npm installs used `--ignore-scripts`; dependency lifecycle scripts have not been run.
 
@@ -27,9 +27,11 @@ Inspected on 2026-11-07. Historical version numbers in this file are a record of
 
 - `python3` is 3.10.12, but uv already has CPython 3.12.14 available and uses that for this project.
 - `node` is 24.19.0 and `npm` is 11.17.0.
-- `psql`, `pg_isready`, Docker, Podman, and Terraform were not found on `PATH`.
+- Docker, Podman, and Terraform were not found on `PATH`. PostgreSQL client/server binaries are available through `scripts/dev-postgres`, not the global `PATH`.
 - No listener was present on the planned API `8003`, console `5203`, or PostgreSQL `55003` ports during the initial inspection.
-- The filesystem had 3.1 GB free at 97% usage before package installation and about 2.3 GB free afterward. Recheck before downloading a PostgreSQL image, browser, or release toolchain.
+- The filesystem had 3.1 GB free at 97% usage before package installation and about 2.0 GB free after application dependencies and PostgreSQL binaries. Recheck before downloading a container image, browser, or release toolchain.
 - Memory was 15 GiB total with 3.9 GiB available at inspection.
 
-The console can be built without a database, but that does not establish backend readiness or financial acceptance. Resolve an isolated PostgreSQL 18 runtime before schema, transaction, and database-role work. Do not stop an unidentified service or remove another project's data to free space.
+The console can be built without a database, but that does not establish backend readiness or financial acceptance. The local PGDG packages were downloaded from the official signed repository, their repository key fingerprint was checked, and the `.deb` payloads were extracted without running system package scripts. The cluster, socket, and log stay under this workspace's ignored `.local/postgresql18/` directory and bind only to `127.0.0.1:55003`. `scripts/fetch-postgres18`, `scripts/dev-postgres`, and `scripts/bootstrap-dev-db` capture the user-space setup path without modifying the system package database or creating a default host cluster.
+
+The local cluster uses trust authentication for loopback development only. Any process on the trusted host can request a local database role, so this setup does not establish protection from a malicious local process or production database identity. See [local PostgreSQL setup](LOCAL_POSTGRES.md). The normal release uses the separately specified managed database/IAM/TLS path. Do not stop an unidentified service or remove another project's data to free space.

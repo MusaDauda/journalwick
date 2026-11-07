@@ -14,13 +14,13 @@ Every item stays open until the named behavior exists in this repository and has
 - [x] Create React/TypeScript console and npm lock using supported Node 24/Vite versions.
 - [ ] Finish safe settings profiles and log redaction; environment example and no-secret gitignore rules are present.
 - [x] Add local API/console ports and strict same-origin development proxy.
-- [ ] Resolve PostgreSQL 18 runtime; create only a dedicated `journalwick-dev` database service/volume.
+- [x] Resolve an isolated PostgreSQL 18.6 local runtime and dedicated `journalwick` database under `.local/`.
 
 ## M2 — Database foundation and migration authority
 
 - [ ] Implement typed DB settings, role-specific pools, transaction ownership, and safe diagnostics.
 - [ ] Implement migration IDs/checksums/status/locking and checksum refusal.
-- [ ] Create restrictive roles and `jw`, `jw_api`, `jw_private`, `jw_support` schemas.
+- [x] Create restrictive development roles and `jw`, `jw_api`, `jw_private`, `jw_support` schemas.
 - [ ] Implement baseline schema and foreign-key/constraint inventory through reviewed migrations.
 - [ ] Verify runtime/worker/reporter/recovery grants and direct-DML/private-function denials.
 

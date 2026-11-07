@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+project_dir="$(cd -- "${script_dir}/.." && pwd)"
+pg_root="${project_dir}/.local/postgresql18"
+pg_bin="${pg_root}/usr/lib/postgresql/18/bin"
+pg_lib="${pg_root}/usr/lib/x86_64-linux-gnu"
+pg_data="${pg_root}/data"
+pg_socket="${pg_root}/socket"
+pg_log="${pg_root}/server.log"
+
+run_pg() {
+    LD_LIBRARY_PATH="${pg_lib}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" "$@"
+}
+
+require_binary() {
+    if [[ ! -x "$1" ]]; then
+        printf '%s\n' "Missing local PostgreSQL executable: $1" >&2
+        printf '%s\n' "See docs/TOOLCHAIN.md for the user-space development database setup." >&2
+        exit 1
+    fi
+}
+
+require_cluster() {
+    if [[ ! -s "${pg_data}/PG_VERSION" ]]; then
+        printf '%s\n' "The Journalwick PostgreSQL 18 data directory is not initialized." >&2
+        printf '%s\n' "Run scripts/dev-postgres init once before starting the server." >&2
+        exit 1
+    fi
+}
+
+case "${1:-}" in
+    init)
+        require_binary "${pg_bin}/initdb"
+        if [[ -e "$pg_data" ]]; then
+            printf '%s\n' "Refusing to initialize an existing path: $pg_data" >&2
+            exit 1
+        fi
+        mkdir -p "$pg_socket"
+        run_pg "${pg_bin}/initdb" \
+            --no-instructions \
+            --data-checksums \
+            --encoding=UTF8 \
+            --no-locale \
+            --auth-local=trust \
+            --auth-host=trust \
+            --username=postgres \
+            -L "${pg_root}/usr/share/postgresql/18" \
+            -D "$pg_data"
+        ;;
+    start)
+        require_binary "${pg_bin}/pg_ctl"
+        require_cluster
+        mkdir -p "$pg_socket"
+        if run_pg "${pg_bin}/pg_ctl" -D "$pg_data" status >/dev/null 2>&1; then
+            printf '%s\n' 'Journalwick PostgreSQL is already running.'
+            exit 0
+        fi
+        run_pg "${pg_bin}/pg_ctl" \
+            -D "$pg_data" \
+            -l "$pg_log" \
+            -o "-h 127.0.0.1 -p 55003 -k $pg_socket" \
+            start
+        ;;
+    stop)
+        require_binary "${pg_bin}/pg_ctl"
+        require_cluster
+        if ! run_pg "${pg_bin}/pg_ctl" -D "$pg_data" status >/dev/null 2>&1; then
+            printf '%s\n' 'Journalwick PostgreSQL is not running.'
+            exit 0
+        fi
+        run_pg "${pg_bin}/pg_ctl" -D "$pg_data" stop -m fast
+        ;;
+    status)
+        require_binary "${pg_bin}/pg_ctl"
+        require_cluster
+        run_pg "${pg_bin}/pg_ctl" -D "$pg_data" status
+        ;;
+    ready)
+        require_binary "${pg_bin}/pg_isready"
+        run_pg "${pg_bin}/pg_isready" -h 127.0.0.1 -p 55003 -U postgres -d postgres
+        ;;
+    version)
+        require_binary "${pg_bin}/postgres"
+        run_pg "${pg_bin}/postgres" --version
+        ;;
+    psql)
+        require_binary "${pg_bin}/psql"
+        shift
+        run_pg "${pg_bin}/psql" -h 127.0.0.1 -p 55003 \
+            -U "${JOURNALWICK_DEV_DB_USER:-postgres}" "$@"
+        ;;
+    createdb)
+        require_binary "${pg_bin}/createdb"
+        shift
+        run_pg "${pg_bin}/createdb" -h 127.0.0.1 -p 55003 \
+            -U "${JOURNALWICK_DEV_DB_USER:-postgres}" "$@"
+        ;;
+    *)
+        printf '%s\n' 'Usage: scripts/dev-postgres {init|start|stop|status|ready|version|psql|createdb}' >&2
+        exit 2
+        ;;
+esac

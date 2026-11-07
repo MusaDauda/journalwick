@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+database_name='journalwick'
+
+"${script_dir}/dev-postgres" ready >/dev/null
+
+database_owner="$("${script_dir}/dev-postgres" psql -d postgres -Atqc \
+    "SELECT pg_get_userbyid(datdba) FROM pg_database WHERE datname = '${database_name}'")"
+
+if [[ -z "$database_owner" ]]; then
+    "${script_dir}/dev-postgres" createdb --template=template0 --encoding=UTF8 --locale=C "$database_name"
+elif [[ "$database_owner" != 'postgres' ]]; then
+    printf '%s\n' "Database ${database_name} has unexpected owner ${database_owner}; inspect before continuing." >&2
+    exit 1
+fi
+
+"${script_dir}/dev-postgres" psql -d "$database_name" -v ON_ERROR_STOP=1 \
+    -f "${script_dir}/dev-bootstrap.sql"
+
+printf '%s\n' 'Journalwick local roles, schemas, grants, and btree_gist support are ready.'
