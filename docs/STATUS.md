@@ -35,5 +35,6 @@ Docker/Podman and Terraform are not installed on the inspected host. The filesys
 - `d0ee8ad` — `chore: lock the Python and console toolchains`
 - `c3a41e9` — `feat: add API process liveness route`
 - `4474916` — `feat: add synthetic ledger overview and scoped search`
+- `a56300d` — `chore: add isolated PostgreSQL 18 development runtime`
 
-The next implementation milestone is the migration runner and first reviewed schema migration; PostgreSQL setup scripts and status documentation are being finalized before that work.
+The next implementation milestone is the migration runner and first reviewed schema migration. The rootless database setup, role/schema bootstrap, and current state are committed.

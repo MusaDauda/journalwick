@@ -21,6 +21,7 @@ The user asked that skills be found, installed when appropriate, and read before
 | `security-and-hardening` | `addyosmani/agent-skills` | 79.9K | Input, auth, authorization, privacy, and dependency hardening |
 | `security-best-practices` | `openai/skills` | 12K | Secure-by-default Python and TypeScript review; installed. The repository is now marked deprecated, so use as supplemental guidance only. |
 | `stripe-integration` | `wshobson/agents` | 13.8K | Stripe API/webhook guidance, filtered through the narrower Journalwick ledger-evidence contract |
+| `database-migration` | `wshobson/agents` | 18K | Installed for schema work; its ORM-specific examples are supplemental because Journalwick uses raw SQL migrations and a custom checksum runner |
 
 The CLI reports an unsupported PromptScript integration for global installs after copying selected skills under `/home/musa/.agents/skills`; `npx skills list --global --json` confirms the copies are available to Codex. No skill files were added to the project repository.
 
