@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 import hashlib
+import os
+import shutil
 from datetime import UTC, datetime
 from pathlib import Path
 
+import psycopg
 import pytest
+from psycopg.conninfo import conninfo_to_dict, make_conninfo
+from pydantic import SecretStr
 
 from journalwick.migrations.manifest import MIGRATION_IDS
 from journalwick.migrations.runner import (
@@ -12,8 +17,11 @@ from journalwick.migrations.runner import (
     Migration,
     MigrationRunnerError,
     _validate_history,
+    apply_migrations,
     discover_migrations,
+    migration_status,
 )
+from journalwick.platform.settings import Settings
 
 
 def _migration(directory: Path, migration_id: str, sql: bytes = b"SELECT 1;\n") -> Migration:
@@ -103,3 +111,48 @@ def test_validate_history_rejects_a_gap_in_applied_records(tmp_path: Path) -> No
         _validate_history(applied, (first, second))
 
     assert raised.value.code == "MIGRATION_HISTORY_GAP"
+
+
+def test_validate_history_refuses_an_unreleased_applied_migration(tmp_path: Path) -> None:
+    sources = tuple(_migration(tmp_path, migration_id) for migration_id in MIGRATION_IDS[:4])
+    applied = {
+        migration.migration_id: AppliedMigration(
+            checksum=migration.checksum,
+            applied_at=datetime.now(UTC),
+        )
+        for migration in sources
+    }
+
+    with pytest.raises(MigrationRunnerError) as raised:
+        _validate_history(applied, sources)
+
+    assert raised.value.code == "MIGRATION_UNRELEASED_APPLIED"
+
+
+def test_migrator_reports_and_skips_unreleased_draft(tmp_path: Path) -> None:
+    admin_dsn = os.environ.get("JW_TEST_ADMIN_DSN")
+    if not admin_dsn:
+        pytest.skip("JW_TEST_ADMIN_DSN must name a dedicated local verification database")
+    parts = conninfo_to_dict(admin_dsn)
+    if (
+        parts.get("host") != "127.0.0.1"
+        or parts.get("port") != "55003"
+        or parts.get("user") != "postgres"
+        or not parts.get("dbname", "").startswith("journalwick_verify_")
+    ):
+        raise RuntimeError("Integration checks require a dedicated local verification database")
+
+    for migration_id in MIGRATION_IDS[:3]:
+        source = Path("migrations") / f"{migration_id}.sql"
+        shutil.copyfile(source, tmp_path / source.name)
+    _migration(tmp_path, MIGRATION_IDS[3], b"CREATE TABLE jw.draft_must_not_run (id integer);\n")
+    settings = Settings(
+        database_url=SecretStr(make_conninfo(admin_dsn, user="journalwick_migrator"))
+    )
+
+    status = migration_status(settings, tmp_path)
+    assert status[3].state == "draft"
+    assert apply_migrations(settings, tmp_path) == ()
+    with psycopg.connect(admin_dsn) as connection:
+        row = connection.execute("SELECT to_regclass('jw.draft_must_not_run')").fetchone()
+        assert row is not None and row[0] is None

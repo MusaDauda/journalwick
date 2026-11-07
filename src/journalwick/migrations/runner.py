@@ -17,7 +17,7 @@ from psycopg import Connection
 from psycopg import Error as PsycopgError
 
 from journalwick import __version__
-from journalwick.migrations.manifest import MIGRATION_IDS
+from journalwick.migrations.manifest import MIGRATION_IDS, RELEASED_MIGRATION_IDS
 from journalwick.platform.settings import Settings
 
 _MIGRATION_FILE = re.compile(r"^(\d{4}_[a-z0-9_]+)\.sql$")
@@ -51,7 +51,7 @@ class AppliedMigration:
 @dataclass(frozen=True, slots=True)
 class MigrationStatus:
     migration_id: str
-    state: Literal["applied", "pending", "not_authored"]
+    state: Literal["applied", "pending", "draft", "not_authored"]
     source_checksum: str | None
     applied_at: datetime | None
 
@@ -271,6 +271,11 @@ def _validate_history(
                 "MIGRATION_CHECKSUM_MISMATCH",
                 f"Applied migration {migration_id} differs from the recorded checksum.",
             )
+        if migration_id not in RELEASED_MIGRATION_IDS:
+            raise MigrationRunnerError(
+                "MIGRATION_UNRELEASED_APPLIED",
+                f"Database migration {migration_id} is not released by this build.",
+            )
 
     applied_ids = set(applied)
     for index, migration_id in enumerate(MIGRATION_IDS):
@@ -330,9 +335,11 @@ def migration_status(
         source = source_by_id.get(migration_id)
         record = applied.get(migration_id)
         if record is not None:
-            state: Literal["applied", "pending", "not_authored"] = "applied"
-        elif source is not None:
+            state: Literal["applied", "pending", "draft", "not_authored"] = "applied"
+        elif source is not None and migration_id in RELEASED_MIGRATION_IDS:
             state = "pending"
+        elif source is not None:
+            state = "draft"
         else:
             state = "not_authored"
         result.append(
@@ -357,6 +364,8 @@ def apply_migrations(settings: Settings, directory: Path | None = None) -> tuple
         _validate_history(applied, migrations)
 
         for migration in migrations:
+            if migration.migration_id not in RELEASED_MIGRATION_IDS:
+                break
             if migration.migration_id in applied:
                 continue
             try:

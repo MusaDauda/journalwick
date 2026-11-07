@@ -29,6 +29,8 @@ The CLI reports an unsupported PromptScript integration for global installs afte
 
 Searched the skills catalog for portfolio/website, Python/FastAPI, PostgreSQL, React/TypeScript, accessibility, testing/Playwright, security, architecture, documentation/planning, payments/Stripe, ledger/accounting/reconciliation, passkeys/WebAuthn, AWS/Terraform, and cryptography/KMS.
 
+On 2026-11-08, focused searches for PostgreSQL security and database integration testing again selected the installed `supabase-postgres-best-practices` and `python-testing-patterns` skills. Their privilege, lock-order, and database-test references guide the current journal work; no additional skill was needed.
+
 - Portfolio/Awwwards skills target marketing or personal showcase sites, not Journalwick's operational finance console.
 - No credible high-install ledger/accounting or passkey-specific skill surfaced. Search results for these were low-install or poorly sourced; use the reviewed accounting blueprint and primary WebAuthn/provider docs instead.
 - Postgres skills tied to Drizzle, Prisma, or Supabase runtime are not a fit for this Python/Psycopg product; only generic SQL guidance will be used.

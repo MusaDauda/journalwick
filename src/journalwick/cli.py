@@ -53,7 +53,7 @@ def main() -> None:
         if arguments.database_command == "migrate":
             applied = apply_migrations(settings)
             if not applied:
-                print("No pending SQL migrations.")
+                print("No pending released SQL migrations.")
                 return
             for migration_id in applied:
                 print(f"Applied {migration_id}.")

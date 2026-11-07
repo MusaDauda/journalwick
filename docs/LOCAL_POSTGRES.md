@@ -32,6 +32,8 @@ Useful local commands:
 
 The API runtime URL in `.env.example` contains no password and is intended only for this trusted local fixture. Environment loading remains explicit; source no secrets or real provider credentials in `.env.example`.
 
+`journalwick db status` labels authored but unreleased SQL as `draft`. `journalwick db migrate` applies only the released migration prefix; it leaves drafts untouched until their implementation and required checks are complete.
+
 ## Standard container setup
 
 The Day 03 baseline also specifies `infra/compose.dev.yaml` with a dedicated PostgreSQL 18 image/volume. That path remains to be authored and verified. Do not substitute an unrelated portfolio database or remove this fixture's files with `down -v`.

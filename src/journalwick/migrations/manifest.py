@@ -11,6 +11,9 @@ MIGRATION_IDS = (
     "0008_final_constraints_privileges_and_retention",
 )
 
+# Only this contiguous prefix is approved for ordinary migration commands.
+RELEASED_MIGRATION_IDS = MIGRATION_IDS[:3]
+
 REQUIRED_KERNEL_FUNCTIONS = (
     "admit_operation_v1",
     "activate_reservation_v1",
