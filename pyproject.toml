@@ -1,0 +1,56 @@
+[project]
+name = "journalwick"
+version = "0.1.0"
+description = "A standalone multi-currency ledger and reconciliation product"
+readme = "README.md"
+authors = [
+    { name = "Journalwick contributors" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.43.126",
+    "cryptography>=50.0.2",
+    "fastapi[standard-no-fastapi-cloud-cli]>=0.162.2",
+    "httpx>=0.28.1",
+    "psycopg[binary,pool]>=3.3.8",
+    "pydantic-settings>=2.16.2",
+    "stripe>=16.1.0",
+    "webauthn>=3.0.1",
+]
+
+[project.scripts]
+journalwick = "journalwick.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.fastapi]
+entrypoint = "journalwick.main:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-config --strict-markers"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/journalwick"]
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.170.15",
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.4.1.post1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.4",
+]

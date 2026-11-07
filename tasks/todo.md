@@ -6,14 +6,14 @@ Every item stays open until the named behavior exists in this repository and has
 
 - [x] Record user-selected workspace and preserve the handbook repository.
 - [x] Map the baseline capabilities, dependency order, architecture, and console design direction.
-- [ ] Keep this scope aligned with the 68-scenario source gate.
+- [x] Keep this scope aligned with the 68-scenario source gate.
 
 ## M1 — Reproducible independent repository
 
-- [ ] Create Python 3.12 `uv` package and lock; verify import/package/CLI identity.
-- [ ] Create React/TypeScript console and npm lock using supported Node 24/Vite versions.
-- [ ] Add safe settings profiles, environment example, log redaction, and no-secret gitignore rules.
-- [ ] Add local API/console ports and strict same-origin development proxy.
+- [x] Create Python 3.12 `uv` package and lock; verify import/package/CLI identity.
+- [x] Create React/TypeScript console and npm lock using supported Node 24/Vite versions.
+- [ ] Finish safe settings profiles and log redaction; environment example and no-secret gitignore rules are present.
+- [x] Add local API/console ports and strict same-origin development proxy.
 - [ ] Resolve PostgreSQL 18 runtime; create only a dedicated `journalwick-dev` database service/volume.
 
 ## M2 — Database foundation and migration authority

@@ -6,7 +6,9 @@ This repository is the application workspace selected by the user: `/home/musa/D
 
 ## Status
 
-Project scope and architecture have been mapped. Application implementation has not started. The baseline defines 68 blocking acceptance scenarios; all begin as `not_run` and require real evidence before the product can be called complete.
+The project scope, architecture, and design are mapped. The first API liveness route and synthetic finance overview are implemented. The baseline defines 68 blocking acceptance scenarios; all remain `not_run` until actual scoped evidence is recorded.
+
+The Python package, application import, CLI identity, console production build, console lint, and Python type/lint checks have passed. The local health route responds directly and through the same-origin Vite proxy. No database-backed behavior is implemented or accepted yet.
 
 ## Architecture and design
 
@@ -17,6 +19,8 @@ Project scope and architecture have been mapped. Application implementation has 
 - [Implementation plan](tasks/plan.md)
 - [Task tracker](tasks/todo.md)
 - [Skill research and installation record](docs/SKILLS.md)
+- [Resolved toolchain and host prerequisites](docs/TOOLCHAIN.md)
+- [Current implementation status](docs/STATUS.md)
 - [Source blueprint and workspace decision](docs/decisions/0001-workspace.md)
 
 ## Product boundaries
