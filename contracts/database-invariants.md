@@ -1,6 +1,6 @@
 # Database invariants implemented so far
 
-This inventory covers migrations `0001` through `0003` only. The rest of the Day 03 schema and the guarded financial functions are still open; this file is not a claim that the database baseline is complete.
+This inventory covers released migrations `0001` through `0003` and explicitly identified work in draft migration `0004`. The rest of the Day 03 schema and guarded financial functions are still open; this file is not a claim that the database baseline is complete.
 
 ## Migration authority
 
@@ -55,8 +55,14 @@ This inventory covers migrations `0001` through `0003` only. The rest of the Day
 | Each operation step has at most one proposal; a proposal version is bound to the same-book template version and accounting period. | `posting_proposals_one_per_step` and composite proposal/template/period FKs. |
 | An approval binds the exact proposal version/hash, book organization, human reviewer membership version, and approval class. | Composite version/hash and organization/membership FKs; unique reviewer/class key; one-way revocation trigger. |
 
+## Draft journal kernel
+
+Migration `0004` is not released. Its current wallet-transfer subset uses a database-computed request hash and immutable step identity, verifies a current session and role, matches the approved proposal to a strictly bounded two-line template, and locks the book and account state before changing totals. Journal headers are inserted after their lines; deferred checks reject missing headers, nonconsecutive lines, and per-currency imbalance. Journal and posting mutation guards retain accepted history. Exact operation-step and proposal-step FKs prevent cross-step linkage.
+
+The draft also records correction limits and line allocations against exact original and correction postings. The wallet-transfer subset does not establish the rest of the template grammar, opening-balance admission, reservations, provider evidence, or the full kernel interface.
+
 ## Verification boundary
 
 The migrations were applied to an isolated PostgreSQL 18.6 verification database. Targeted negative checks observed cross-organization assignment refusal, mismatched template accounting meaning and ineligible currency refusal, active currency/template/account immutability, bounded setup approval expiry, duplicate active restriction refusal, and a concurrent overlapping-period insert failing with SQLSTATE `23P01`. Operation/proposal checks also confirmed request-key uniqueness, unique economic-recognition identity, exact proposal-hash binding, immutable accepted receipts/versions, and one-way approval revocation. Runtime table writes and `CREATE` on support/public schemas were denied. The isolated verification database is local synthetic evidence only.
 
-Migrations `0001`–`0003` are applied to the primary local `journalwick` database from source revisions `424c697035caedde3a8ca5643dfa89366c1d2179`, `9b25ae3ed821880f5dea975291968ea46bf611ce`, and `76093b3e5f3883ca8e32b3972a958b28d2d90326`. The remaining migrations, financial kernel, passkey/API flows, provider workflows, reporting, deployment, and recovery controls are not covered by these checks. All 68 source acceptance scenarios remain `not_run` until their defined evidence is collected.
+Migrations `0001`–`0003` are applied to the primary local `journalwick` database from source revisions `424c697035caedde3a8ca5643dfa89366c1d2179`, `9b25ae3ed821880f5dea975291968ea46bf611ce`, and `76093b3e5f3883ca8e32b3972a958b28d2d90326`. Migration `0004` is exercised only in isolated verification databases and remains blocked from the ordinary migration path. The remaining migrations, full financial kernel, passkey/API flows, provider workflows, reporting, deployment, and recovery controls are not covered by these checks. All 68 source acceptance scenarios remain `not_run` until their defined evidence is collected.
