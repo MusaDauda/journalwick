@@ -19,7 +19,7 @@ Every item stays open until the named behavior exists in this repository and has
 ## M2 — Database foundation and migration authority
 
 - [ ] Implement typed DB settings, role-specific pools, transaction ownership, and safe diagnostics.
-- [ ] Implement migration IDs/checksums/status/locking and checksum refusal.
+- [x] Implement migration IDs/checksums/status/locking and checksum refusal.
 - [x] Create restrictive development roles and `jw`, `jw_api`, `jw_private`, `jw_support` schemas.
 - [ ] Implement baseline schema and foreign-key/constraint inventory through reviewed migrations.
 - [ ] Verify runtime/worker/reporter/recovery grants and direct-DML/private-function denials.

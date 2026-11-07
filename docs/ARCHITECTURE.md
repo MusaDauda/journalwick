@@ -56,7 +56,7 @@ Domain modules do not import FastAPI. Provider code does not import a repository
 
 ## Database roles
 
-The baseline separates a non-login kernel owner, a controlled migrator, runtime API, worker, reporter, and protected recovery identity. Development trust is an explicitly local synthetic fixture only. Release uses managed PostgreSQL with TLS, IAM database authentication, separate host roles, external key/secret custody, and reviewed migration execution.
+The baseline separates a non-login kernel owner, a controlled migrator, runtime API, worker, reporter, and protected recovery identity. The CLI connects as the migrator, acquires a PostgreSQL advisory lock, switches to the kernel owner only while applying a reviewed checksum-matched SQL migration, and records success atomically. Development trust is an explicitly local synthetic fixture only. Release uses managed PostgreSQL with TLS, IAM database authentication, separate host roles, external key/secret custody, and reviewed migration execution.
 
 ## Honest operating limits
 
