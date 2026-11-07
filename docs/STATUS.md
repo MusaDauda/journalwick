@@ -37,4 +37,4 @@ Docker/Podman and Terraform are not installed on the inspected host. The filesys
 - `4474916` — `feat: add synthetic ledger overview and scoped search`
 - `a56300d` — `chore: add isolated PostgreSQL 18 development runtime`
 
-The next implementation milestone is the migration runner and first reviewed schema migration. The rootless database setup, role/schema bootstrap, and current state are committed.
+The rootless database setup, role/schema bootstrap, and current state are committed. The next implementation milestone is the connection pool, migration runner, and first reviewed schema migration.
