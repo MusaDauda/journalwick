@@ -1,6 +1,6 @@
 # Database invariants implemented so far
 
-This inventory covers migrations `0001` and `0002` only. The rest of the Day 03 schema and the guarded financial functions are still open; this file is not a claim that the database baseline is complete.
+This inventory covers migrations `0001` through `0003` only. The rest of the Day 03 schema and the guarded financial functions are still open; this file is not a claim that the database baseline is complete.
 
 ## Migration authority
 
@@ -43,8 +43,20 @@ This inventory covers migrations `0001` and `0002` only. The rest of the Day 03 
 | Accounting periods use start-inclusive/end-exclusive ranges and cannot overlap within a book. | GiST exclusion `accounting_periods_no_overlap` using the verified `jw_support.gist_uuid_ops` class from the `btree_gist` extension. |
 | Runtime, worker, and reporter roles cannot create schema objects or directly write these tables. | No table DML grants; explicit revocation of `CREATE` on application/support schemas and `public`. |
 
+## Operations, retries, proposals, and approvals
+
+| Invariant | Enforcement |
+|---|---|
+| One business identity per book/namespace/key, with its intent hash retained. | `business_operations_book_business_identity_unique`; immutable identity columns and versioned state updates. |
+| A step is identified once within its operation and cannot be changed after acceptance. | `operation_steps_operation_key_unique`, scoped operation FK, result-kind/state checks, and `operation_steps_admit_once`. |
+| One retry key exists per actor/book/command family; the raw key is not stored. | `command_receipts_scoped_key_unique` stores only 32-byte digests; accepted results become immutable. |
+| One recognized economic fact is recorded for its book/source/object/kind/version identity. | `economic_recognitions_identity_unique`; update, delete, and truncate guards. |
+| Posting template payloads and proposal versions remain immutable after creation/publication. | Version/hash constraints and row triggers; proposal current-version FK is deferred and must resolve by commit. |
+| Each operation step has at most one proposal; a proposal version is bound to the same-book template version and accounting period. | `posting_proposals_one_per_step` and composite proposal/template/period FKs. |
+| An approval binds the exact proposal version/hash, book organization, human reviewer membership version, and approval class. | Composite version/hash and organization/membership FKs; unique reviewer/class key; one-way revocation trigger. |
+
 ## Verification boundary
 
-The migrations were applied to an isolated PostgreSQL 18.6 verification database. Targeted negative checks observed cross-organization assignment refusal, mismatched template accounting meaning and ineligible currency refusal, active currency/template/account immutability, bounded setup approval expiry, duplicate active restriction refusal, and a concurrent overlapping-period insert failing with SQLSTATE `23P01`. Runtime table writes and `CREATE` on support/public schemas were denied. The isolated verification database is local synthetic evidence only.
+The migrations were applied to an isolated PostgreSQL 18.6 verification database. Targeted negative checks observed cross-organization assignment refusal, mismatched template accounting meaning and ineligible currency refusal, active currency/template/account immutability, bounded setup approval expiry, duplicate active restriction refusal, and a concurrent overlapping-period insert failing with SQLSTATE `23P01`. Operation/proposal checks also confirmed request-key uniqueness, unique economic-recognition identity, exact proposal-hash binding, immutable accepted receipts/versions, and one-way approval revocation. Runtime table writes and `CREATE` on support/public schemas were denied. The isolated verification database is local synthetic evidence only.
 
-Migrations `0001` and `0002` are applied to the primary local `journalwick` database. Their recorded source revisions are `424c697035caedde3a8ca5643dfa89366c1d2179` and `9b25ae3ed821880f5dea975291968ea46bf611ce`, respectively. The remaining migrations, financial kernel, passkey/API flows, provider workflows, reporting, deployment, and recovery controls are not covered by these checks. All 68 source acceptance scenarios remain `not_run` until their defined evidence is collected.
+Migrations `0001` and `0002` are applied to the primary local `journalwick` database from source revisions `424c697035caedde3a8ca5643dfa89366c1d2179` and `9b25ae3ed821880f5dea975291968ea46bf611ce`. Migration `0003` is under review and has not yet been applied there. The remaining migrations, financial kernel, passkey/API flows, provider workflows, reporting, deployment, and recovery controls are not covered by these checks. All 68 source acceptance scenarios remain `not_run` until their defined evidence is collected.
