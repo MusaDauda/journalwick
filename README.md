@@ -6,9 +6,9 @@ This repository is the application workspace selected by the user: `/home/musa/D
 
 ## Status
 
-The project scope, architecture, and design are mapped. The first API liveness route, synthetic finance overview, checksum-checked migration commands, and first identity/organization/audit schema migration are implemented. The baseline defines 68 blocking acceptance scenarios; all remain `not_run` until actual scoped evidence is recorded.
+The project scope, architecture, and design are mapped. The first API liveness route, synthetic finance overview, checksum-checked migration commands, and the identity/organization/audit foundation are implemented. The books/currencies/accounts/periods migration is under review. The baseline defines 68 blocking acceptance scenarios; all remain `not_run` until actual scoped evidence is recorded.
 
-The Python package, application import, CLI identity, console production build, console lint, Python type/lint checks, and migration-runner unit checks have passed. The API liveness route responds directly and through the same-origin Vite proxy. The database currently contains only the first schema foundation; no financial product command is implemented or accepted yet.
+The Python package, application import, CLI identity, console production build, console lint, Python type/lint checks, and migration-runner unit checks have passed. The API liveness route responds directly and through the same-origin Vite proxy. The primary local database currently contains only migration `0001`; no financial product command is implemented or accepted yet.
 
 ## Architecture and design
 
