@@ -10,8 +10,8 @@ Updated 2026-11-07. This is a local progress note, not a substitute for the Day 
 - A separate PostgreSQL 18.6 user-space cluster and `journalwick` database are provisioned under ignored `.local/`; the trusted development roles/schemas and `btree_gist` support extension are present. `scripts/fetch-postgres18`, `scripts/dev-postgres`, and `scripts/bootstrap-dev-db` capture the setup path.
 - `journalwick db status` and `journalwick db migrate` use a dedicated migrator identity, advisory lock, contiguous migration series, recorded SHA-256 checksums, and one transaction per migration. Migration `0001_identity_organization_and_audit` creates the initial identity, organization, enrollment, operating-state, and audit foundations.
 - Migration `0002_books_currencies_accounts_and_periods` defines books, per-book financial/evidence state, curated versioned currency definitions, exact template/currency eligibility, scoped accounts and roles, setup approvals, lifecycle restrictions, and non-overlapping periods. It is committed as `9b25ae3` and applied to the primary local database.
-- The primary local `journalwick` database has `0001` applied from source revision `424c697035caedde3a8ca5643dfa89366c1d2179` and `0002` applied from source revision `9b25ae3ed821880f5dea975291968ea46bf611ce`. The five later baseline migrations `0004`–`0008` are not authored yet.
-- Migration `0003_operations_proposals_and_approvals` now defines business/step identities, command receipts, economic recognition uniqueness, posting templates, immutable proposal versions, and scoped reviewer approvals. It has passed isolated PostgreSQL checks but is not committed or applied to the primary database yet.
+- Migration `0003_operations_proposals_and_approvals` defines business/step identities, command receipts, economic recognition uniqueness, posting templates, immutable proposal versions, and scoped reviewer approvals. It is committed as `76093b3` and applied to the primary database.
+- The primary local `journalwick` database has `0001`–`0003` applied from source revisions `424c697035caedde3a8ca5643dfa89366c1d2179`, `9b25ae3ed821880f5dea975291968ea46bf611ce`, and `76093b3e5f3883ca8e32b3972a958b28d2d90326`. The five later baseline migrations `0004`–`0008` are not authored yet.
 - All 68 copied acceptance checks remain `not_run`.
 
 ## Observed local verification
@@ -28,7 +28,7 @@ The following were observed on this workspace and source state:
 - The local `journalwick` database reports PostgreSQL 18.6 and accepts connections on `127.0.0.1:55003`; role/schema bootstrap completed through the project script.
 - A browser preview confirmed the overview, fixture label, exact amount display, book-scoped search, no-match state, and mobile navigation. Search matches exact synthetic references after a duplicate-key issue was corrected.
 - In an isolated PostgreSQL 18.6 verification database, migrations `0001`–`0003` applied and appeared in `db status`. Targeted checks refused cross-organization role/account/template bindings, mismatched account/template accounting identity, an ineligible template currency, active meaning changes, long-lived setup approvals, duplicate active restriction sources, and concurrent overlapping periods. Operations/proposals checks confirmed request-key and economic-fact uniqueness, exact proposal hash binding, immutable approved payloads, and one-way receipt/approval transitions. Runtime table writes and schema `CREATE` were denied. A changed applied checksum was refused; invalid migration SQL rolled back its preceding DDL and did not record success; the runtime role was refused migration commands; and a service principal could not be linked as a human user. The verification database is temporary local evidence only.
-- The primary database reports `0001` and `0002` at their recorded source revisions above. API readiness returns 503 `SCHEMA_INCOMPLETE` with the database available because later baseline migrations and kernel functions are not present yet.
+- The primary database reports `0001`–`0003` at their recorded source revisions above. API readiness returns 503 `SCHEMA_INCOMPLETE` with the database available because later baseline migrations and kernel functions are not present yet.
 
 These checks cover scaffolding, the first three schema foundations, migration authority, and a synthetic console slice only. No passkey ceremony, journal command, provider sandbox, release image, cloud deployment, or recovery drill has passed.
 
@@ -46,5 +46,7 @@ Docker/Podman and Terraform are not installed on the inspected host. The filesys
 - `424c697` — `feat: add migration runner and identity foundations`
 - `118714e` — `docs: record identity migration verification`
 - `9b25ae3` — `feat: add scoped book and account setup schema`
+- `0a68ff8` — `docs: record book and account schema verification`
+- `76093b3` — `feat: add operation and proposal identity schema`
 
-The rootless database setup, role/schema bootstrap, bounded API pool/readiness checks, migration runner, and first two schema migrations are committed and applied locally. The next milestone is to commit and apply migration `0003`; migration `0004` will add immutable journals, postings, and the first financial kernel interface.
+The rootless database setup, role/schema bootstrap, bounded API pool/readiness checks, migration runner, and first three schema migrations are committed and applied locally. The next schema milestone is migration `0004` for immutable journals, postings, and the first guarded financial kernel interface.
