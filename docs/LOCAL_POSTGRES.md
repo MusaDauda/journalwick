@@ -34,6 +34,12 @@ The API runtime URL in `.env.example` contains no password and is intended only 
 
 `journalwick db status` labels authored but unreleased SQL as `draft`. `journalwick db migrate` applies only the released migration prefix; it leaves drafts untouched until their implementation and required checks are complete.
 
+## Isolated database checks
+
+Run `uv run python scripts/provision_verification_db.py` to create a new local database with the released migration prefix. The command prints a `JW_TEST_ADMIN_DSN` value for rollback-only integration tests. Run it with `--journal-draft` to create a separate database with the current draft journal migration installed for concurrent transaction checks; it prints `JW_TEST_COMMITTED_DSN`.
+
+Set both printed variables and run `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pytest -q tests/test_migration_runner.py tests/test_journal_kernel_integration.py`. The script creates new uniquely named databases and does not remove existing databases. A concurrency database is tied to the draft migration checksum; provision a new one after changing that SQL.
+
 ## Standard container setup
 
 The Day 03 baseline also specifies `infra/compose.dev.yaml` with a dedicated PostgreSQL 18 image/volume. That path remains to be authored and verified. Do not substitute an unrelated portfolio database or remove this fixture's files with `down -v`.

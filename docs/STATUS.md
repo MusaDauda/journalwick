@@ -13,6 +13,7 @@ Updated 2026-11-08. This is a local progress note, not a substitute for the Day 
 - Migration `0003_operations_proposals_and_approvals` defines business/step identities, command receipts, economic recognition uniqueness, posting templates, immutable proposal versions, and scoped reviewer approvals. It is committed as `76093b3` and applied to the primary database.
 - The primary local `journalwick` database has `0001`–`0003` applied from source revisions `424c697035caedde3a8ca5643dfa89366c1d2179`, `9b25ae3ed821880f5dea975291968ea46bf611ce`, and `76093b3e5f3883ca8e32b3972a958b28d2d90326`. Migration `0004` is in active development and is not released; migrations `0005`–`0008` are not authored yet.
 - The migration command applies only the explicitly released prefix and reports an authored unreleased file as `draft`.
+- Draft migration `0004` contains append-only journal/posting tables, correction records, database-side hashes, and a guarded manual wallet-transfer path. It supports only the documented two-line wallet-transfer template subset and has not been released or applied to the primary database.
 - All 68 copied acceptance checks remain `not_run`.
 
 ## Observed local verification
@@ -31,8 +32,10 @@ The following were observed on this workspace and source state:
 - In an isolated PostgreSQL 18.6 verification database, migrations `0001`–`0003` applied and appeared in `db status`. Targeted checks refused cross-organization role/account/template bindings, mismatched account/template accounting identity, an ineligible template currency, active meaning changes, long-lived setup approvals, duplicate active restriction sources, and concurrent overlapping periods. Operations/proposals checks confirmed request-key and economic-fact uniqueness, exact proposal hash binding, immutable approved payloads, and one-way receipt/approval transitions. Runtime table writes and schema `CREATE` were denied. A changed applied checksum was refused; invalid migration SQL rolled back its preceding DDL and did not record success; the runtime role was refused migration commands; and a service principal could not be linked as a human user. The verification database is temporary local evidence only.
 - The primary database reports `0001`–`0003` at their recorded source revisions above. API readiness returns 503 `SCHEMA_INCOMPLETE` with the database available because later baseline migrations and kernel functions are not present yet.
 - On a newly created isolated local database, `db migrate` applied only released migrations `0001`–`0003` and `db status` reported the authored `0004` as `draft`.
+- A focused PostgreSQL integration suite exercised the draft wallet-transfer path with synthetic sessions and opening data. It checked balanced posting, accepted retry, stale membership, cross-book reviewer roles, session revocation, mismatched step-up/step identity, template mismatch, insufficient funds, and missing account state. A separate two-connection check held the book lock until both spends were waiting: one 7,000-unit spend succeeded and the other was refused against a 10,000-unit balance.
+- `uv run ruff check src/journalwick tests scripts/provision_verification_db.py`, `uv run mypy src/journalwick`, and the focused migration/journal suite passed. The suite reported 20 passing checks on the selected local verification databases.
 
-These checks cover scaffolding, the first three schema foundations, migration authority, and a synthetic console slice only. No passkey ceremony, journal command, provider sandbox, release image, cloud deployment, or recovery drill has passed.
+These checks cover scaffolding, the first three released schema foundations, a draft kernel slice, migration authority, and a synthetic console slice only. No full product journey, actual passkey ceremony, provider sandbox, release image, cloud deployment, or recovery drill has passed.
 
 ## Local prerequisites still missing
 
@@ -50,5 +53,7 @@ Docker/Podman and Terraform are not installed on the inspected host. The filesys
 - `9b25ae3` — `feat: add scoped book and account setup schema`
 - `0a68ff8` — `docs: record book and account schema verification`
 - `76093b3` — `feat: add operation and proposal identity schema`
+- `caf4db5` — `chore: add trusted PostgreSQL hash support`
+- `2b2349e` — `fix: keep draft migrations out of the release path`
 
-The rootless database setup, role/schema bootstrap, bounded API pool/readiness checks, migration runner, and first three schema migrations are committed and applied locally. The next schema milestone is migration `0004` for immutable journals, postings, and the first guarded financial kernel interface.
+The rootless database setup, role/schema bootstrap, bounded API pool/readiness checks, migration runner, and first three schema migrations are committed and applied locally. The next schema milestone is to finish and release migration `0004`, including its remaining template grammar, command families, cross-adapter canonicalization, and acceptance evidence.
