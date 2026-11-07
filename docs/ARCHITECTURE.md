@@ -62,6 +62,6 @@ The baseline separates a non-login kernel owner, a controlled migrator, runtime 
 
 Initial book-level serialization favors inspectable financial correctness over unmeasured parallel throughput. Separate API and worker deployment roles do not by themselves create whole-application high availability. Local synthetic provider behavior proves only fixture behavior. A database restore alone cannot prove provider state or reestablish current authority.
 
-## Source mapping
+## Related contracts
 
-The authoritative details are in chapters `20`, `30–45`, `60–67`, and `80–84` of the Day 03 blueprint. The local structure is intentionally adjusted only for the user-selected workspace path.
+The [capability map](CAPABILITY_MAP.md) defines module ownership and delivery dependencies. [Database invariants](../contracts/database-invariants.md) record implemented constraints, and the [acceptance checklist](acceptance/gate.json) defines the required evidence for financial, authorization, provider, and recovery behavior.

@@ -72,4 +72,4 @@ The selected direction makes the product's distinctive structure—the paired de
 - Errors identify the field or current version and preserve safe draft input. Unknown provider state stays explicit and never appears as success.
 - Long tables keep headers and currency/sign readable. Narrow layouts provide a detail view without dropping accounting units.
 - Allocation trees also have an accessible hierarchical table. Timelines use ordered text, not colored dots alone.
-- Build and review against the installed accessibility skill and the applicable interface guidelines before calling a browser journey complete.
+- Verify keyboard navigation, focus handling, screen-reader labels, contrast, and responsive behavior against WCAG 2.2 before marking a browser journey complete.

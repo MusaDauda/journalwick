@@ -2,7 +2,7 @@
 
 ## Objective
 
-Implement the complete reviewed Day 03 baseline in this user-selected workspace. Preserve the contract's full scope and prove each claim with the evidence defined in the 68-scenario gate.
+Deliver the complete Journalwick ledger and reconciliation product. Verify financial correctness, scoped authority, provider uncertainty, reporting, deployment, and recovery against the 68-scenario acceptance checklist.
 
 ## Stack
 
@@ -16,7 +16,7 @@ Resolve and record actual dependency versions in `uv.lock` and `apps/console/pac
 
 ## Dependency-ordered delivery
 
-1. **Repository and contract:** local workspace ADR, source-to-scope mapping, project instructions, app/package identities, dependency locks, local commands.
+1. **Repository and contract:** product scope, architecture decisions, module ownership, app/package identities, dependency locks, and local commands.
 2. **Platform and DB:** typed settings/errors/redaction, bounded role-specific pools, unit-of-work, migration checksum runner, PostgreSQL roles/schemas, protected function boundary.
 3. **Identity and governance:** passkey ceremony/session/CSRF, one-time bootstrap, recovery, current role and organization/book scoping, currency/account/period setup.
 4. **Financial kernel:** canonical operation identities, typed/versioned template grammar, proposals and distinct approvals, journal acceptance, immutable projection and sequences, operation-level spend controls.
@@ -45,8 +45,8 @@ Resolve and record actual dependency versions in `uv.lock` and `apps/console/pac
 - Checkpoint C: one operator and a distinct reviewer can complete the first account/reservation slice through the browser.
 - Checkpoint D: synthetic provider uncertainty, duplicate/reordered observations, and evidence-linked reconciliation are actionable without another financial authority.
 - Checkpoint E: reporting and export boundaries, role scopes, recovery/quarantine procedures, and release identities are evidenced.
-- Checkpoint F: all applicable blocking Day 03 acceptance declarations have actual evidence or a precise blocked/not_run reason; no missing baseline behavior is hidden by the demo.
+- Checkpoint F: every applicable blocking acceptance scenario has actual evidence or a precise blocked/not_run reason; incomplete behavior remains visible in the project status.
 
-## Source mapping
+## Delivery references
 
-Use `Implementation/Day-03-Journalwick/chapters/71-ordered-file-and-feature-implementation-work-packages.md` for the detailed 29 package sequence, `70` for setup, `80–84` for operations/recovery, and `90-acceptance-scenarios-and-evidence.md` plus `gate.json` for completion.
+Use [the capability map](../docs/CAPABILITY_MAP.md) for module ownership, [the task tracker](todo.md) for outstanding work, and [the acceptance checklist](../docs/acceptance/gate.json) for verification requirements. Deployment and recovery require observed operational evidence before release.

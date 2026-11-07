@@ -10,7 +10,7 @@ Inspected on 2026-11-07. Historical version numbers in this file are a record of
 | uv | 0.12.17 | Python package, lock, and environment manager |
 | Node.js | 24.19.0 | Current supported Vite runtime |
 | npm | 11.17.0 | Pinned in the console package metadata |
-| Vite | 8.3.6 | Vite's current guide requires Node 20.19+ or 22.12+; Node 24.19 satisfies it |
+| Vite | 8.3.6 | Requires Node 20.19+ or 22.12+; Node 24.19 satisfies it |
 | React / React DOM | 19.3.1 | Created from the current React TypeScript Vite template |
 | TypeScript | 5.9.3 | Selected because `openapi-typescript` declares a TypeScript 5.x peer range; avoid bypassing npm's peer check |
 | TanStack Query | 5.107.1 | Scoped async query state |

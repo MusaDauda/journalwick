@@ -1,688 +1,619 @@
 {
-  "day": 3,
+  "project": "Journalwick",
   "title": "Journalwick implementation acceptance",
-  "requires_days": [],
-  "scope": "Future application/provider/deployment evidence;authoring does not execute or pass these checks.",
+  "scope": "Financial, authorization, provider, deployment, and recovery acceptance. Each check requires observed evidence.",
   "checks": [
     {
-      "id": "D03-A01",
+      "id": "JW-A01",
       "description": "Independent reproducible setup",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a01/result.json",
       "pass_condition": "Package/API/console/DB identities match Journalwick and setup is reproducible without Keyrill.",
-      "forbidden_outcome": "Hidden sibling repository imports,unreviewed lock upgrades or discarded financial data.",
-      "contracts": "20,70,71"
+      "forbidden_outcome": "Hidden sibling repository imports,unreviewed lock upgrades or discarded financial data."
     },
     {
-      "id": "D03-A02",
+      "id": "JW-A02",
       "description": "Fresh migration and checksum refusal",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a02/result.json",
       "pass_condition": "Complete schema/functions/FKs exist;changed history is rejected before mutation.",
-      "forbidden_outcome": "A forged success ledger row or automatic HTTP migration conceals an incompatible schema.",
-      "contracts": "30\u201334,70,71"
+      "forbidden_outcome": "A forged success ledger row or automatic HTTP migration conceals an incompatible schema."
     },
     {
-      "id": "D03-A03",
+      "id": "JW-A03",
       "description": "Protected table and function privileges",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a03/result.json",
       "pass_condition": "Only reviewed public signatures/actions succeed under each intended role.",
-      "forbidden_outcome": "Role labels appear safe while direct DML,SET ROLE or private helper execution bypasses acceptance.",
-      "contracts": "20,40,72,84"
+      "forbidden_outcome": "Role labels appear safe while direct DML,SET ROLE or private helper execution bypasses acceptance."
     },
     {
-      "id": "D03-A04",
+      "id": "JW-A04",
       "description": "Search-path substitution resistance",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a04/result.json",
       "pass_condition": "It resolves only trusted schema-qualified objects and rejects arbitrary selectors.",
-      "forbidden_outcome": "An untrusted function/table replacement changes accepted financial behavior.",
-      "contracts": "20,44,72"
+      "forbidden_outcome": "An untrusted function/table replacement changes accepted financial behavior."
     },
     {
-      "id": "D03-A05",
+      "id": "JW-A05",
       "description": "Exact amount and overflow validation",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a05/result.json",
       "pass_condition": "Only exact bounded permitted integer values proceed;overflow rolls back the complete command.",
-      "forbidden_outcome": "NUMERIC conversion rounds bad input or a JSON number loses precision silently.",
-      "contracts": "30,60,72"
+      "forbidden_outcome": "NUMERIC conversion rounds bad input or a JSON number loses precision silently."
     },
     {
-      "id": "D03-A06",
+      "id": "JW-A06",
       "description": "Currency exponent and unit mapping",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a06/result.json",
       "pass_condition": "Exact integer quantities and currency definitions survive API/UI/storage round trips.",
-      "forbidden_outcome": "Universal multiplication by100 or implicit rounding changes the economic amount.",
-      "contracts": "30,41,50"
+      "forbidden_outcome": "Universal multiplication by100 or implicit rounding changes the economic amount."
     },
     {
-      "id": "D03-A07",
+      "id": "JW-A07",
       "description": "One-time bootstrap and passkey enrollment",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a07/result.json",
       "pass_condition": "One eligible initial authority chain is accepted and later bootstrap is refused.",
-      "forbidden_outcome": "Pending owner grants ordinary access or reusable enrollment secrets enter files/logs.",
-      "contracts": "34,62"
+      "forbidden_outcome": "Pending owner grants ordinary access or reusable enrollment secrets enter files/logs."
     },
     {
-      "id": "D03-A08",
+      "id": "JW-A08",
       "description": "Passkey ceremony verification",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a08/result.json",
       "pass_condition": "Only the complete valid bound ceremony authenticates once.",
-      "forbidden_outcome": "A client boolean or public request ID substitutes for verification.",
-      "contracts": "34,62"
+      "forbidden_outcome": "A client boolean or public request ID substitutes for verification."
     },
     {
-      "id": "D03-A09",
+      "id": "JW-A09",
       "description": "Session cookie,CSRF and origin",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a09/result.json",
       "pass_condition": "Correct cookie separation and valid same-origin write;invalid variants fail unchanged.",
-      "forbidden_outcome": "HttpOnly session is exposed to JS or cookie possession alone authorizes cross-origin mutation.",
-      "contracts": "34,60,62"
+      "forbidden_outcome": "HttpOnly session is exposed to JS or cookie possession alone authorizes cross-origin mutation."
     },
     {
-      "id": "D03-A10",
+      "id": "JW-A10",
       "description": "Session revocation and epoch freshness",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a10/result.json",
       "pass_condition": "Current server authority invalidates the selected/all sessions and stale UV context.",
-      "forbidden_outcome": "Old role/epoch in an open page remains usable or a digest redisplays its raw token.",
-      "contracts": "34,62"
+      "forbidden_outcome": "Old role/epoch in an open page remains usable or a digest redisplays its raw token."
     },
     {
-      "id": "D03-A11",
+      "id": "JW-A11",
       "description": "Governance versus financial role",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a11/result.json",
       "pass_condition": "Governance succeeds within scope while financial actions deny until separately granted.",
-      "forbidden_outcome": "Owner label automatically permits every accounting action.",
-      "contracts": "34,63"
+      "forbidden_outcome": "Owner label automatically permits every accounting action."
     },
     {
-      "id": "D03-A12",
+      "id": "JW-A12",
       "description": "Current role and cross-book isolation",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a12/result.json",
       "pass_condition": "Every detail/write repeats exact scope/current authority and denies revoked/foreign access.",
-      "forbidden_outcome": "Collection filtering or hidden buttons are the only protection.",
-      "contracts": "34,50,63"
+      "forbidden_outcome": "Collection filtering or hidden buttons are the only protection."
     },
     {
-      "id": "D03-A13",
+      "id": "JW-A13",
       "description": "Creator/reviewer separation",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a13/result.json",
       "pass_condition": "Self approval fails and distinct current review can satisfy the selected class.",
-      "forbidden_outcome": "Two role assignments on one principal count as two reviewers.",
-      "contracts": "31,34,60"
+      "forbidden_outcome": "Two role assignments on one principal count as two reviewers."
     },
     {
-      "id": "D03-A14",
+      "id": "JW-A14",
       "description": "Reviewer revocation before posting",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a14/result.json",
       "pass_condition": "Current authority check rejects APPROVAL_STALE without a journal.",
-      "forbidden_outcome": "Old approved=true state freezes revoked review authority.",
-      "contracts": "34,40,60"
+      "forbidden_outcome": "Old approved=true state freezes revoked review authority."
     },
     {
-      "id": "D03-A15",
+      "id": "JW-A15",
       "description": "Canonical hash compatibility",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a15/result.json",
       "pass_condition": "Version1 bytes/hashes agree for equivalent supported values;meaningful changes conflict.",
-      "forbidden_outcome": "jsonb::text/JSON.stringify differences silently create multiple financial identities.",
-      "contracts": "40,66"
+      "forbidden_outcome": "jsonb::text/JSON.stringify differences silently create multiple financial identities."
     },
     {
-      "id": "D03-A16",
+      "id": "JW-A16",
       "description": "Template type and expansion enforcement",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a16/result.json",
       "pass_condition": "Bounds/types reject bad candidates;DB authoritative expansion rejects altered lines.",
-      "forbidden_outcome": "Balanced totals alone authorize arbitrary additional account movement.",
-      "contracts": "44,66"
+      "forbidden_outcome": "Balanced totals alone authorize arbitrary additional account movement."
     },
     {
-      "id": "D03-A17",
+      "id": "JW-A17",
       "description": "Journal atomicity and immutable lines",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a17/result.json",
       "pass_condition": "One complete valid journal commits;invalid/partial paths rollback and accepted history stays immutable.",
-      "forbidden_outcome": "Dangling lines,false accepted receipt,late append or historical line UPDATE.",
-      "contracts": "30,40"
+      "forbidden_outcome": "Dangling lines,false accepted receipt,late append or historical line UPDATE."
     },
     {
-      "id": "D03-A18",
+      "id": "JW-A18",
       "description": "Opening balances and setup activation",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a18/result.json",
       "pass_condition": "Only eligible approved setup activates and opening money is an explainable journal.",
-      "forbidden_outcome": "Writable opening_balance or pending account permits ordinary financial posting.",
-      "contracts": "30,63,66"
+      "forbidden_outcome": "Writable opening_balance or pending account permits ordinary financial posting."
     },
     {
-      "id": "D03-A19",
+      "id": "JW-A19",
       "description": "Period overlap and date eligibility",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a19/result.json",
       "pass_condition": "GiST/book-lock protection rejects overlap and wrong/closed date membership.",
-      "forbidden_outcome": "A route-provided period UUID overrides actual accounting date.",
-      "contracts": "31,40,45"
+      "forbidden_outcome": "A route-provided period UUID overrides actual accounting date."
     },
     {
-      "id": "D03-A20",
+      "id": "JW-A20",
       "description": "Independent book/account controls",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a20/result.json",
       "pass_condition": "Only the exact authorized source is removed;remaining controls continue to apply.",
-      "forbidden_outcome": "One restore button clears all sources or amount restriction silently becomes a journal.",
-      "contracts": "33,45,63"
+      "forbidden_outcome": "One restore button clears all sources or amount restriction silently becomes a journal."
     },
     {
-      "id": "D03-A21",
+      "id": "JW-A21",
       "description": "Retry and business identity conflict",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a21/result.json",
       "pass_condition": "Exact accepted retry resolves once;conflicting reuse rejects at its proper identity layer.",
-      "forbidden_outcome": "A new HTTP request creates another economic intent or mismatched payload overwrites original.",
-      "contracts": "31,40,60"
+      "forbidden_outcome": "A new HTTP request creates another economic intent or mismatched payload overwrites original."
     },
     {
-      "id": "D03-A22",
+      "id": "JW-A22",
       "description": "Lost commit response",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a22/result.json",
       "pass_condition": "The original journal/result is recovered with no second monetary effect,including after book closure/restriction when current safe result-read authority remains.",
-      "forbidden_outcome": "Timeout becomes assumed failure and a new business key duplicates it.",
-      "contracts": "40,60,83"
+      "forbidden_outcome": "Timeout becomes assumed failure and a new business key duplicates it."
     },
     {
-      "id": "D03-A23",
+      "id": "JW-A23",
       "description": "Distinct concurrent spend intents",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a23/result.json",
       "pass_condition": "At most one full request commits and final spendable funds remain nonnegative.",
-      "forbidden_outcome": "Both stale prechecks authorize13000 total claim.",
-      "contracts": "10,40"
+      "forbidden_outcome": "Both stale prechecks authorize13000 total claim."
     },
     {
-      "id": "D03-A24",
+      "id": "JW-A24",
       "description": "Operation-level reservation budget",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a24/result.json",
       "pass_condition": "Captured plus active remaining claims never exceeds approved operation budget.",
-      "forbidden_outcome": "New reservation identities repeatedly obtain the full parent intent amount.",
-      "contracts": "31,40"
+      "forbidden_outcome": "New reservation identities repeatedly obtain the full parent intent amount."
     },
     {
-      "id": "D03-A25",
+      "id": "JW-A25",
       "description": "Pending cancellation versus active release",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a25/result.json",
       "pass_condition": "One coherent transition wins;cancelled-before-activation contributes no active reserve.",
-      "forbidden_outcome": "Active provider-backed funds are freed through the pending cancellation endpoint.",
-      "contracts": "10,31,60"
+      "forbidden_outcome": "Active provider-backed funds are freed through the pending cancellation endpoint."
     },
     {
-      "id": "D03-A26",
+      "id": "JW-A26",
       "description": "Partial capture and release conservation",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a26/result.json",
       "pass_condition": "Posted wallet5000,reserve0,available5000 and captured/released components explain8000.",
-      "forbidden_outcome": "Capture double-subtracts availability or final released label implies captured money returned.",
-      "contracts": "10,40,61"
+      "forbidden_outcome": "Capture double-subtracts availability or final released label implies captured money returned."
     },
     {
-      "id": "D03-A27",
+      "id": "JW-A27",
       "description": "Allocation and expiry race",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a27/result.json",
       "pass_condition": "Only free unallocated remainder releases/expires under current locked state.",
-      "forbidden_outcome": "A stale expiry scan frees money that may already have moved externally.",
-      "contracts": "31,40,61"
+      "forbidden_outcome": "A stale expiry scan frees money that may already have moved externally."
     },
     {
-      "id": "D03-A28",
+      "id": "JW-A28",
       "description": "Partial provider outcome partition",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a28/result.json",
       "pass_condition": "Leaf amounts conserve root;confirmed units capture once and unknown units remain reserved.",
-      "forbidden_outcome": "Partition creates another external instruction or parent and children double count exposure.",
-      "contracts": "31,61,42"
+      "forbidden_outcome": "Partition creates another external instruction or parent and children double count exposure."
     },
     {
-      "id": "D03-A29",
+      "id": "JW-A29",
       "description": "Dispatch proposal authority",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a29/result.json",
       "pass_condition": "Only current exact reviewed proposal can create eligible prepared attempt/outbox.",
-      "forbidden_outcome": "Recognition automation or operator role alone authorizes arbitrary provider mutation.",
-      "contracts": "34,40,65"
+      "forbidden_outcome": "Recognition automation or operator role alone authorizes arbitrary provider mutation."
     },
     {
-      "id": "D03-A30",
+      "id": "JW-A30",
       "description": "Crash around send-intent",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a30/result.json",
       "pass_condition": "Original attempt/reference survives and ambiguous transmission is unknown with allocation retained.",
-      "forbidden_outcome": "Lease expiry or process crash proves no effect and blindly reissues payment.",
-      "contracts": "42,81"
+      "forbidden_outcome": "Lease expiry or process crash proves no effect and blindly reissues payment."
     },
     {
-      "id": "D03-A31",
+      "id": "JW-A31",
       "description": "Lease fencing and late response",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a31/result.json",
       "pass_condition": "Stale local publication fails;idempotent evidence cannot duplicate recognized money.",
-      "forbidden_outcome": "A fence is claimed to unsend old network traffic or old worker overwrites current state.",
-      "contracts": "32,42"
+      "forbidden_outcome": "A fence is claimed to unsend old network traffic or old worker overwrites current state."
     },
     {
-      "id": "D03-A32",
+      "id": "JW-A32",
       "description": "Verification versus retransmission",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a32/result.json",
       "pass_condition": "Verification never sends money;unsafe replay denies and safe path retains original identity.",
-      "forbidden_outcome": "New reference,hidden SDK retry or generic requeue bypasses provider safety evidence.",
-      "contracts": "42,65"
+      "forbidden_outcome": "New reference,hidden SDK retry or generic requeue bypasses provider safety evidence."
     },
     {
-      "id": "D03-A33",
+      "id": "JW-A33",
       "description": "Provider callback authenticity",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a33/result.json",
       "pass_condition": "Invalid/unavailable verification posts nothing;valid responsibility is durably accepted before acknowledgment.",
-      "forbidden_outcome": "Re-serialized bytes or an IP/header label substitute for actual provider-specific verification.",
-      "contracts": "32,41"
+      "forbidden_outcome": "Re-serialized bytes or an IP/header label substitute for actual provider-specific verification."
     },
     {
-      "id": "D03-A34",
+      "id": "JW-A34",
       "description": "Funding binding and cumulative watermark",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a34/result.json",
       "pass_condition": "Only positive approved deltas recognize once and older facts never lower history.",
-      "forbidden_outcome": "Event-ID uniqueness alone credits10000 repeatedly or several bound objects exceed the parent budget.",
-      "contracts": "41"
+      "forbidden_outcome": "Event-ID uniqueness alone credits10000 repeatedly or several bound objects exceed the parent budget."
     },
     {
-      "id": "D03-A35",
+      "id": "JW-A35",
       "description": "Stripe captured amount and balance components",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a35/result.json",
       "pass_condition": "Wallet credit uses captured delta;gross receivable clears with exact fee/net entries once.",
-      "forbidden_outcome": "Authorized amount is fully funded or later net/fee observation credits the wallet again.",
-      "contracts": "41"
+      "forbidden_outcome": "Authorized amount is fully funded or later net/fee observation credits the wallet again."
     },
     {
-      "id": "D03-A36",
+      "id": "JW-A36",
       "description": "Paystack API versus transaction success",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a36/result.json",
       "pass_condition": "Only supported exact bound successful transaction recognizes;other outcomes remain honest.",
-      "forbidden_outcome": "response.status=true or a matching amount on another reference funds wallet.",
-      "contracts": "41"
+      "forbidden_outcome": "response.status=true or a matching amount on another reference funds wallet."
     },
     {
-      "id": "D03-A37",
+      "id": "JW-A37",
       "description": "Provider currency and settlement separation",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a37/result.json",
       "pass_condition": "Unsupported currency bridge becomes a case and available balance is not assumed bank cash.",
-      "forbidden_outcome": "Numeric amount equality hides currency mismatch or payout status invents bank receipt.",
-      "contracts": "41,42"
+      "forbidden_outcome": "Numeric amount equality hides currency mismatch or payout status invents bank receipt."
     },
     {
-      "id": "D03-A38",
+      "id": "JW-A38",
       "description": "Statement staging and all-or-nothing import",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a38/result.json",
       "pass_condition": "Workers use safe staged rows;invalid import never accepts partial financial facts.",
-      "forbidden_outcome": "Discarded raw file is required later,invalid row becomes0 or private fields persist.",
-      "contracts": "32,65"
+      "forbidden_outcome": "Discarded raw file is required later,invalid row becomes0 or private fields persist."
     },
     {
-      "id": "D03-A39",
+      "id": "JW-A39",
       "description": "Deterministic batch matching",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a39/result.json",
       "pass_condition": "Only supported strong identity groups accept and allocations conserve both sides.",
-      "forbidden_outcome": "Amount/time first match or offsetting unrelated differences clears a mismatch.",
-      "contracts": "42,65"
+      "forbidden_outcome": "Amount/time first match or offsetting unrelated differences clears a mismatch."
     },
     {
-      "id": "D03-A40",
+      "id": "JW-A40",
       "description": "Case deduplication and stale resolution",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a40/result.json",
       "pass_condition": "One active case identity persists;new facts stale the old version/hash approval.",
-      "forbidden_outcome": "Repeated scans create duplicate correction opportunities or an old approval authorizes changed effects.",
-      "contracts": "32,42,61"
+      "forbidden_outcome": "Repeated scans create duplicate correction opportunities or an old approval authorizes changed effects."
     },
     {
-      "id": "D03-A41",
+      "id": "JW-A41",
       "description": "No-effect proof and missing-ledger race",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a41/result.json",
       "pass_condition": "Insufficient no-effect proof retains exposure;already recognized fact links without another journal.",
-      "forbidden_outcome": "Timeout/age/absence universally frees funds or snapshot lag creates duplicate posting.",
-      "contracts": "42"
+      "forbidden_outcome": "Timeout/age/absence universally frees funds or snapshot lag creates duplicate posting."
     },
     {
-      "id": "D03-A42",
+      "id": "JW-A42",
       "description": "Refund success before deduction",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a42/result.json",
       "pass_condition": "Wallet/customer effect and payable clearing post once with exact component identity.",
-      "forbidden_outcome": "Customer is debited twice or provider success is labeled bank receipt.",
-      "contracts": "43"
+      "forbidden_outcome": "Customer is debited twice or provider success is labeled bank receipt."
     },
     {
-      "id": "D03-A43",
+      "id": "JW-A43",
       "description": "Refund deduction before success",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a43/result.json",
       "pass_condition": "Pending asset clears through supported success/return path;unknown evidence keeps exposure.",
-      "forbidden_outcome": "Both clearing paths run for the same units or failure alone invents returned funds.",
-      "contracts": "43"
+      "forbidden_outcome": "Both clearing paths run for the same units or failure alone invents returned funds."
     },
     {
-      "id": "D03-A44",
+      "id": "JW-A44",
       "description": "Partial refund,fee and budget protection",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a44/result.json",
       "pass_condition": "Original budget holds,fees recognize once and unproven units remain allocated.",
-      "forbidden_outcome": "Changed refund IDs reset budget or provider fee returns are guessed pro rata.",
-      "contracts": "43"
+      "forbidden_outcome": "Changed refund IDs reset budget or provider fee returns are guessed pro rata."
     },
     {
-      "id": "D03-A45",
+      "id": "JW-A45",
       "description": "Dispute inquiry and withdrawal",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a45/result.json",
       "pass_condition": "Inquiry posts no invented loss;actual withdrawal/fee follow selected exact policy once.",
-      "forbidden_outcome": "A remind event or dispute amount alone triggers repeated provider debits.",
-      "contracts": "43"
+      "forbidden_outcome": "A remind event or dispute amount alone triggers repeated provider debits."
     },
     {
-      "id": "D03-A46",
+      "id": "JW-A46",
       "description": "Dispute won/lost and real return",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a46/result.json",
       "pass_condition": "Won needs actual return to clear receivable;lost reclassifies5000 without another withdrawal.",
-      "forbidden_outcome": "Outcome status alone credits wallet/provider or erases original fee.",
-      "contracts": "43"
+      "forbidden_outcome": "Outcome status alone credits wallet/provider or erases original fee."
     },
     {
-      "id": "D03-A47",
+      "id": "JW-A47",
       "description": "Correction quantity and funds constraints",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a47/result.json",
       "pass_condition": "Cumulative original line limits and current spend rules hold;failure leaves an honest case.",
-      "forbidden_outcome": "New request keys exceed original quantity or correction reactivates captured holds.",
-      "contracts": "33,40,61"
+      "forbidden_outcome": "New request keys exceed original quantity or correction reactivates captured holds."
     },
     {
-      "id": "D03-A48",
+      "id": "JW-A48",
       "description": "FX exact rounding and single consumption",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a48/result.json",
       "pass_condition": "Recorded rational/rounding/mapping determines one balanced conversion at agreed amounts.",
-      "forbidden_outcome": "Float drift,implicit re-quote or new step consumes the same quote again.",
-      "contracts": "33,44,61"
+      "forbidden_outcome": "Float drift,implicit re-quote or new step consumes the same quote again."
     },
     {
-      "id": "D03-A49",
+      "id": "JW-A49",
       "description": "Funds restriction reconstruction",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a49/result.json",
       "pass_condition": "Exact restriction totals reconstruct and are subtracted once from eligible funds.",
-      "forbidden_outcome": "Restriction moves posted money or exceeds availability to fabricate negative funds.",
-      "contracts": "33,40"
+      "forbidden_outcome": "Restriction moves posted money or exceeds availability to fabricate negative funds."
     },
     {
-      "id": "D03-A50",
+      "id": "JW-A50",
       "description": "Full versus partial trial balance",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a50/result.json",
       "pass_condition": "Each reports exact scope/boundary and separate currency totals;subset need not balance.",
-      "forbidden_outcome": "Synthetic suspense row hides subset imbalance or currencies are combined as one money total.",
-      "contracts": "64"
+      "forbidden_outcome": "Synthetic suspense row hides subset imbalance or currencies are combined as one money total."
     },
     {
-      "id": "D03-A51",
+      "id": "JW-A51",
       "description": "Historical holds and projection comparison",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a51/result.json",
       "pass_condition": "Historical uncomputed holds are null/not included;complete comparison checks all declared dimensions.",
-      "forbidden_outcome": "Today holds are attached to old balance as historical availability or missing dimension is called matched.",
-      "contracts": "64"
+      "forbidden_outcome": "Today holds are attached to old balance as historical availability or missing dimension is called matched."
     },
     {
-      "id": "D03-A52",
+      "id": "JW-A52",
       "description": "Report job fencing and limits",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a52/result.json",
       "pass_condition": "Only complete bounded result becomes ready and zero rows remains valid.",
-      "forbidden_outcome": "Truncation is presented complete or a stale worker publishes after cancellation.",
-      "contracts": "64"
+      "forbidden_outcome": "Truncation is presented complete or a stale worker publishes after cancellation."
     },
     {
-      "id": "D03-A53",
+      "id": "JW-A53",
       "description": "Export requester,key and expiry",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a53/result.json",
       "pass_condition": "Content remains requester/current-authority bound and key/expiry failure is unavailable.",
-      "forbidden_outcome": "Snapshot ID acts as bearer URL or plaintext fallback bypasses key failure.",
-      "contracts": "64,66"
+      "forbidden_outcome": "Snapshot ID acts as bearer URL or plaintext fallback bypasses key failure."
     },
     {
-      "id": "D03-A54",
+      "id": "JW-A54",
       "description": "Export corruption before response bytes",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a54/result.json",
       "pass_condition": "Corruption fails before successful body;disconnect is not claimed successful local file storage.",
-      "forbidden_outcome": "Partially verified content is streamed as a valid completed financial report.",
-      "contracts": "64"
+      "forbidden_outcome": "Partially verified content is streamed as a valid completed financial report."
     },
     {
-      "id": "D03-A55",
+      "id": "JW-A55",
       "description": "Period prepare/post race",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a55/result.json",
       "pass_condition": "Each accepted order is coherent and no stale open read posts after preparation blocks it.",
-      "forbidden_outcome": "Preparation/report completion alone marks closed or an unguarded state UPDATE admits late posting.",
-      "contracts": "45"
+      "forbidden_outcome": "Preparation/report completion alone marks closed or an unguarded state UPDATE admits late posting."
     },
     {
-      "id": "D03-A56",
+      "id": "JW-A56",
       "description": "Close source-evidence freshness",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a56/result.json",
       "pass_condition": "Evidence epoch makes the old manifest stale despite unchanged journal count.",
-      "forbidden_outcome": "New unknown/loss facts are ignored because financial totals did not change.",
-      "contracts": "45"
+      "forbidden_outcome": "New unknown/loss facts are ignored because financial totals did not change."
     },
     {
-      "id": "D03-A57",
+      "id": "JW-A57",
       "description": "Close acceptance,abandon and late facts",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a57/result.json",
       "pass_condition": "Only unclosed preparation can reopen;accepted close is stable and late correction uses explicit current period.",
-      "forbidden_outcome": "Old report/timestamps mutate or a retry adds another closure marker.",
-      "contracts": "45"
+      "forbidden_outcome": "Old report/timestamps mutate or a retry adds another closure marker."
     },
     {
-      "id": "D03-A58",
+      "id": "JW-A58",
       "description": "Audit atomicity and safe history",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a58/result.json",
       "pass_condition": "Accepted events are actual and immutable;required audit failure rolls back protected effect.",
-      "forbidden_outcome": "Today state reconstructs fictional old history or secrets/raw payloads enter generic JSON.",
-      "contracts": "64,66"
+      "forbidden_outcome": "Today state reconstructs fictional old history or secrets/raw payloads enter generic JSON."
     },
     {
-      "id": "D03-A59",
+      "id": "JW-A59",
       "description": "Console complete task and accessibility",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a59/result.json",
       "pass_condition": "Each task has usable exact scoped controls and actual accepted result navigation.",
-      "forbidden_outcome": "A decorative dashboard/money Number computation replaces operational workflow or hidden buttons provide security.",
-      "contracts": "50,60\u201366"
+      "forbidden_outcome": "A decorative dashboard/money Number computation replaces operational workflow or hidden buttons provide security."
     },
     {
-      "id": "D03-A60",
+      "id": "JW-A60",
       "description": "Machine issue,activation and rotation",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a60/result.json",
       "pass_condition": "No reveal endpoint exists,pending token cannot act and old credential cutoff holds without cleanup.",
-      "forbidden_outcome": "Sponsor roles/wildcards broaden scope or stored secret body enables replay/redisplay.",
-      "contracts": "34,62,66"
+      "forbidden_outcome": "Sponsor roles/wildcards broaden scope or stored secret body enables replay/redisplay."
     },
     {
-      "id": "D03-A61",
+      "id": "JW-A61",
       "description": "Public managed release boundaries",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a61/result.json",
       "pass_condition": "Full public task works;private paths remain inaccessible and role identities are real.",
-      "forbidden_outcome": "Landing screenshot or dev trust fixture is called public release proof.",
-      "contracts": "80,82"
+      "forbidden_outcome": "Landing screenshot or dev trust fixture is called public release proof."
     },
     {
-      "id": "D03-A62",
+      "id": "JW-A62",
       "description": "RDS IAM reconnect and token handling",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a62/result.json",
       "pass_condition": "Fresh per-connection auth succeeds only for intended role/host without token leakage.",
-      "forbidden_outcome": "Startup token reused indefinitely,migrator authority leaks or TLS is disabled to reconnect.",
-      "contracts": "80,83"
+      "forbidden_outcome": "Startup token reused indefinitely,migrator authority leaks or TLS is disabled to reconnect."
     },
     {
-      "id": "D03-A63",
+      "id": "JW-A63",
       "description": "Database outage and incompatible rollback",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a63/result.json",
       "pass_condition": "Current history/revocations remain;incompatible old writer is blocked/forward-fixed.",
-      "forbidden_outcome": "A code rollback restores old financial data or redispatches unknown instructions.",
-      "contracts": "81"
+      "forbidden_outcome": "A code rollback restores old financial data or redispatches unknown instructions."
     },
     {
-      "id": "D03-A64",
+      "id": "JW-A64",
       "description": "Backup restore and stale authority",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a64/result.json",
       "pass_condition": "Old sessions/credentials/approvals cannot authorize future effects while historical journals remain intact.",
-      "forbidden_outcome": "Green DB health exposes old authority or backup configuration substitutes for restore evidence.",
-      "contracts": "81,84"
+      "forbidden_outcome": "Green DB health exposes old authority or backup configuration substitutes for restore evidence."
     },
     {
-      "id": "D03-A65",
+      "id": "JW-A65",
       "description": "Recovered provider attempts and old writer fencing",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a65/result.json",
       "pass_condition": "No blind replay;old independent writer is fenced and unknown exposure stays individually quarantined.",
-      "forbidden_outcome": "One boolean in restored DB is claimed to fence another DB or new reference resends money.",
-      "contracts": "81,84"
+      "forbidden_outcome": "One boolean in restored DB is claimed to fence another DB or new reference resends money."
     },
     {
-      "id": "D03-A66",
+      "id": "JW-A66",
       "description": "Projection candidate promotion",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a66/result.json",
       "pass_condition": "Only current complete reviewed generation promotes atomically;source history stays unchanged.",
-      "forbidden_outcome": "Reporter repairs totals directly or mixed candidate rows become live.",
-      "contracts": "33,81,84"
+      "forbidden_outcome": "Reporter repairs totals directly or mixed candidate rows become live."
     },
     {
-      "id": "D03-A67",
+      "id": "JW-A67",
       "description": "Measured capacity and overload",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a67/result.json",
       "pass_condition": "Reported latency/throughput/error distributions are measured with context;invariants remain enforced.",
-      "forbidden_outcome": "Vendor numbers,invented p99 or skipped spend checks become performance evidence.",
-      "contracts": "72,81"
+      "forbidden_outcome": "Vendor numbers,invented p99 or skipped spend checks become performance evidence."
     },
     {
-      "id": "D03-A68",
+      "id": "JW-A68",
       "description": "Portfolio truth and role evidence",
       "blocking": true,
       "status": "not_run",
       "evidence": "docs/acceptance/a68/result.json",
       "pass_condition": "Claims link inspectable results and name single-host/uncertain/external limitations accurately.",
-      "forbidden_outcome": "Blueprint lines,mocks,skipped tests or simulated provider events are labeled production experience.",
-      "contracts": "00,71,RESOURCES"
+      "forbidden_outcome": "Specifications, mocks, skipped tests, or simulated provider events are labeled production experience."
     }
   ]
 }

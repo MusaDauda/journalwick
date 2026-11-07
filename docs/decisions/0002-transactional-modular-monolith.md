@@ -17,4 +17,4 @@ Keep the initial API, worker, and database migrations in one independently deplo
 - A per-book serialization lock is an accepted initial limit; any finer-grained scheme needs equivalent invariant evidence and measured workload data.
 - The API and worker can use separate runtime identities while sharing the approved schema and durable outbox.
 
-The decision follows the reviewed Day 03 architecture contract and may be revisited only with coherent proof that its atomicity properties remain intact.
+Revisit this decision only with evidence that journal, reservation, projection, and receipt changes retain the same atomicity guarantees.

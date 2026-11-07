@@ -1,6 +1,6 @@
 # Database invariants implemented so far
 
-This inventory covers released migrations `0001` through `0003` and explicitly identified work in draft migration `0004`. The rest of the Day 03 schema and guarded financial functions are still open; this file is not a claim that the database baseline is complete.
+This inventory covers released migrations `0001` through `0003` and explicitly identified work in draft migration `0004`. The remaining schema and guarded financial functions are still under development.
 
 ## Migration authority
 

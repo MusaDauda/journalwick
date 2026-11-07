@@ -1,14 +1,39 @@
 # Journalwick
 
-Journalwick is a standalone, multi-currency ledger and reconciliation product for finance operators, reviewers, integration engineers, and auditors. It makes accepted financial state exact, inspectable, and safe under retries, concurrency, and uncertain provider outcomes.
-
-This repository is the application workspace selected by the user: `/home/musa/Documents/portfolio-projects/journalwick`. Its reviewed Day 03 build contract is maintained separately in `/home/musa/Documents/github-legend/Implementation/Day-03-Journalwick/`.
+Journalwick is a standalone, multi-currency ledger and reconciliation product for finance operators, reviewers, integration engineers, and auditors. It keeps financial records exact and inspectable across retries, concurrent requests, and uncertain provider outcomes.
 
 ## Status
 
-The project scope, architecture, and design are mapped. The first API liveness route, synthetic finance overview, checksum-checked migration commands, identity/organization/audit foundation, books/currencies/accounts/periods foundation, and operation/proposal identity schema are implemented. An unreleased journal migration contains a narrow synthetic wallet-transfer kernel under active verification. The baseline defines 68 blocking acceptance scenarios; all remain `not_run` until actual scoped evidence is recorded.
+Under active development. The API liveness endpoint, synthetic finance overview, migration runner, and initial identity, organization, account, period, operation, and proposal schemas are implemented. A draft journal migration includes a wallet-transfer posting path under local verification.
 
-The Python package, application import, CLI identity, console production build, console lint, Python type/lint checks, and migration-runner unit checks have passed. The API liveness route responds directly and through the same-origin Vite proxy. The primary local database contains migrations `0001` through `0003`; no financial product command is released or accepted yet.
+The primary development database contains migrations `0001` through `0003`. The console currently displays labeled synthetic data. Authentication, complete financial workflows, provider integrations, deployment, and recovery remain unfinished. The [acceptance checklist](docs/acceptance/gate.json) contains 68 scenarios; none has been marked passed.
+
+## Stack
+
+- Python 3.12, FastAPI, Pydantic, and Psycopg 3.
+- PostgreSQL 18 with guarded functions and checksum-checked SQL migrations.
+- React, TypeScript, Vite, React Router, TanStack Query, and Zod.
+- pytest, Vitest, Playwright, Ruff, mypy, and Oxlint.
+
+## Local development
+
+Install Python dependencies with `uv sync --locked`. See [PostgreSQL setup](docs/LOCAL_POSTGRES.md) for the isolated development database and bootstrap commands.
+
+Start the API from the repository root:
+
+```bash
+uv run fastapi dev --host 127.0.0.1 --port 8003
+```
+
+Start the console in a separate terminal:
+
+```bash
+cd apps/console
+npm ci --ignore-scripts
+npm run dev
+```
+
+The console runs at `http://localhost:5203` and proxies `/api` to `127.0.0.1:8003`. PostgreSQL uses `127.0.0.1:55003`. The liveness endpoint is `/api/v1/health/live`; readiness reports the incomplete schema until the remaining migrations are released.
 
 ## Architecture and design
 
@@ -18,22 +43,12 @@ The Python package, application import, CLI identity, console production build, 
 - [Console design system](docs/DESIGN_SYSTEM.md)
 - [Implementation plan](tasks/plan.md)
 - [Task tracker](tasks/todo.md)
-- [Skill research and installation record](docs/SKILLS.md)
 - [Resolved toolchain and host prerequisites](docs/TOOLCHAIN.md)
 - [Current implementation status](docs/STATUS.md)
-- [Source blueprint and workspace decision](docs/decisions/0001-workspace.md)
 
 ## Product boundaries
 
 PostgreSQL is the financial authority. Journals are append-only, money is exact integer minor units tied to immutable currency definitions, and provider effects are handled through durable intent and verified observations. A timeout does not prove a transfer failed; unresolved exposure remains visible and reserved. The local fixture is synthetic and does not imply production readiness or financial certification.
-
-## Planned local endpoints
-
-The Day 03 baseline assigns the API to `127.0.0.1:8003`, the console to `http://localhost:5203`, and a dedicated PostgreSQL 18 development database to `127.0.0.1:55003`. The API and console use those reserved ports; PostgreSQL tools run through `scripts/dev-postgres`. Recheck ports and prerequisites before starting local services.
-
-## Build status
-
-See `tasks/todo.md` and [current implementation status](docs/STATUS.md). The local PostgreSQL 18.6 cluster is a trusted synthetic fixture. It does not stand in for the managed TLS/IAM release topology. Do not treat a synthetic provider fixture, successful frontend build, or documentation check as acceptance of the ledger or a release.
 
 ## Local database migrations
 

@@ -1,6 +1,6 @@
 # Journalwick implementation status
 
-Updated 2026-11-08. This is a local progress note, not a substitute for the Day 03 acceptance gate.
+Updated 2026-11-08. This records implementation progress; acceptance requires the evidence defined in `docs/acceptance/gate.json`.
 
 ## Current state
 
@@ -14,7 +14,7 @@ Updated 2026-11-08. This is a local progress note, not a substitute for the Day 
 - The primary local `journalwick` database has `0001`–`0003` applied from source revisions `424c697035caedde3a8ca5643dfa89366c1d2179`, `9b25ae3ed821880f5dea975291968ea46bf611ce`, and `76093b3e5f3883ca8e32b3972a958b28d2d90326`. Migration `0004` is in active development and is not released; migrations `0005`–`0008` are not authored yet.
 - The migration command applies only the explicitly released prefix and reports an authored unreleased file as `draft`.
 - Draft migration `0004` contains append-only journal/posting tables, correction records, database-side hashes, and a guarded manual wallet-transfer path. It supports only the documented two-line wallet-transfer template subset and has not been released or applied to the primary database.
-- All 68 copied acceptance checks remain `not_run`.
+- All 68 acceptance checks remain `not_run`.
 
 ## Observed local verification
 

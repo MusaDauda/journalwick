@@ -1,12 +1,12 @@
 # Journalwick task tracker
 
-Every item stays open until the named behavior exists in this repository and has the scoped evidence required by the Day 03 gate. A local synthetic fixture never passes a live-provider or deployment check.
+Every item stays open until the behavior exists and has the evidence required by the acceptance checklist. Local synthetic fixtures establish only local behavior; provider and deployment checks require their own observations.
 
 ## M0 — Scope and product design
 
-- [x] Record user-selected workspace and preserve the handbook repository.
+- [x] Establish an independent application repository.
 - [x] Map the baseline capabilities, dependency order, architecture, and console design direction.
-- [x] Keep this scope aligned with the 68-scenario source gate.
+- [x] Define 68 acceptance scenarios covering the product's required behavior.
 
 ## M1 — Reproducible independent repository
 
@@ -59,7 +59,7 @@ Every item stays open until the named behavior exists in this repository and has
 
 ## M7 — Acceptance and handoff
 
-- [ ] Work through Day 03 A01–A68. Store sanitized observation records under `docs/acceptance/`.
+- [ ] Verify acceptance scenarios A01–A68. Store sanitized observation records under `docs/acceptance/`.
 - [ ] Mark external/provider/deployment/recovery evidence blocked or not_run when required capability is absent.
 - [ ] Align README, architecture decisions, demonstration script, and claims to actual observed behavior.
 - [ ] Do not call the baseline finished while required behavior is missing or required evidence is unexecuted.

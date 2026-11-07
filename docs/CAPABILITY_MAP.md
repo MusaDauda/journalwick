@@ -37,6 +37,6 @@ The console is not a second authority. Provider adapters create verified facts a
 
 The first end-to-end finance journey will create a synthetic organization/book, configure one currency and spendable account, accept a reviewed opening journal, reserve `8000` integer minor units, capture `5000`, release `3000`, then show posted and available amounts at their actual sequence boundaries. It will include insufficient-funds, stale-review, self-approval, duplicate-capture, and lost-response outcomes before later provider and reconciliation capabilities are enabled.
 
-## Source mapping
+## Delivery and verification
 
-Use `20-architecture-and-repository-contract.md` for module ownership, `71-ordered-file-and-feature-implementation-work-packages.md` for the complete work sequence, `73-first-complete-accounting-slice-walkthrough.md` for the first integrated journey, and `90-acceptance-scenarios-and-evidence.md` for blocking acceptance.
+The [implementation plan](../tasks/plan.md) orders the work by dependency. The [task tracker](../tasks/todo.md) records unfinished behavior, and the [acceptance checklist](acceptance/gate.json) defines the required evidence for each scenario.

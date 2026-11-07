@@ -90,7 +90,7 @@ def discover_migrations(directory: Path | None = None) -> tuple[Migration, ...]:
         if migration_id not in MIGRATION_IDS:
             raise MigrationRunnerError(
                 "MIGRATION_UNKNOWN",
-                f"Migration {migration_id} is not part of the reviewed baseline.",
+                f"Migration {migration_id} is not registered in the migration series.",
             )
 
         try:

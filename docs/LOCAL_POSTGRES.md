@@ -42,4 +42,4 @@ Set both printed variables and run `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 uv run pyte
 
 ## Standard container setup
 
-The Day 03 baseline also specifies `infra/compose.dev.yaml` with a dedicated PostgreSQL 18 image/volume. That path remains to be authored and verified. Do not substitute an unrelated portfolio database or remove this fixture's files with `down -v`.
+The planned container setup is `infra/compose.dev.yaml` with a dedicated PostgreSQL 18 image and volume. It has not been implemented or verified yet. Use a separate project database and preserve existing development volumes.

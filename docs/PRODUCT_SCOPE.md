@@ -24,16 +24,16 @@ Build an independently deployable, multi-currency accounting ledger and reconcil
 - A task-oriented finance console with scoped navigation, exact money entry, current/historical boundary labels, clear stale/conflict/unknown/unavailable states, and keyboard-accessible workflows.
 - Bounded reports, append-only audit history, encrypted requester-bound exports, period close, operating runbooks, and protected recovery/projection-rebuild workflows.
 
-The authoritative behavior is specified in Day 03 chapters `00–90` and `gate.json`. The handbook review confirms 68 blocking application scenarios remain `not_run`; it does not claim a built, tested, deployed, or certified product.
+The [acceptance checklist](acceptance/gate.json) defines 68 blocking scenarios covering financial correctness, authorization, provider uncertainty, deployment, and recovery. All remain `not_run` until the required evidence is recorded.
 
 ## Non-goals and limits
 
 - This project is the finance product itself, not a public personal-portfolio landing page.
 - It does not depend on Stripe, Paystack, Keyrill, or another portfolio service at startup.
 - The portfolio fixture does not establish actual provider sandbox access, production financial operations, regulatory certification, profitability, or high availability.
-- Do not add AI transaction approval, automated account balancing, direct provider movement, or other financial authority beyond the reviewed contracts.
+- Transaction approval requires an eligible current reviewer. Automated balancing and unreviewed provider movement are outside the product's financial authority.
 - The initial design deliberately accepts book-level commit serialization and a single API/worker-host availability boundary. Any optimization needs evidence and a reviewed change to the contract.
 
 ## Modern implementation choices
 
-The source baseline already calls for current Python/TypeScript tools, strict API contracts, passkeys, exact amount handling, durable asynchronous provider workflows, query-cache scope partitioning, accessible console behavior, encrypted exports, managed database identity, and protected recovery. The project will use maintained dependencies and reproducible locks, then add only user-facing improvements that preserve those financial boundaries.
+The architecture uses Python and TypeScript, strict API contracts, passkeys, exact amount handling, durable asynchronous provider workflows, query-cache scope partitioning, accessible console behavior, encrypted exports, managed database identity, and protected recovery. Maintained dependencies and reproducible locks support these choices. New features must preserve the same financial boundaries.
